@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canal do Torajo - YouTube (Arquivo de Mídia Perdida)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #ffffff; color: #0f0f0f; font-family: "Roboto", Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow-x: hidden; }
+        .top-bar { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid #e5e5e5; position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; }
+        .top-left { display: flex; align-items: center; gap: 16px; font-weight: bold; font-size: 20px; }
+        .search-box { width: 40%; max-width: 600px; height: 40px; display: flex; border: 1px solid #ccc; border-radius: 20px; overflow: hidden; }
+        .search-input { width: 100%; border: none; padding: 0 16px; font-size: 16px; outline: none; }
+        .search-btn { width: 64px; background: #f8f8f8; border: none; border-left: 1px solid #ccc; cursor: pointer; }
+        .sign-in-top { border: 1px solid #065fd4; color: #065fd4; padding: 8px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; background: none; }
+        .main-layout { display: flex; margin-top: 56px; height: calc(100vh - 56px); }
+        .sidebar { width: 240px; background: #fff; padding: 12px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #e5e5e5; overflow-y: auto; font-size: 14px; }
+        .side-item { display: flex; align-items: center; gap: 24px; padding: 10px 12px; border-radius: 10px; cursor: pointer; color: #0f0f0f; }
+        .side-item:hover { background: #f2f2f2; }
+        .side-item.active { font-weight: bold; background: #f2f2f2; }
+        .sidebar-sep { height: 1px; background: #e5e5e5; margin: 12px 0; }
+        .sidebar-signin { padding: 16px; font-size: 14px; line-height: 20px; }
+        .sidebar-signin button { border: 1px solid #065fd4; color: #065fd4; padding: 8px 12px; border-radius: 20px; font-weight: bold; margin-top: 12px; background: none; }
+        .content { flex: 1; overflow-y: auto; background: #fff; padding-bottom: 60px; }
+        .banner { width: 100%; height: 170px; background: linear-gradient(to bottom, #f04be6, #a111b8); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid #e5e5e5; }
+        .banner-art { display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; }
+        .banner-text { font-size: 76px; font-weight: 900; color: #0edf54; font-family: 'Impact', 'Arial Black', sans-serif; -webkit-text-stroke: 3px #000; text-shadow: 5px 5px 0px rgba(0,0,0,0.4); letter-spacing: 2px; }
+        .banner-avatar-clip { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #000; overflow: hidden; margin-top: 15px; }
+        .channel-info { max-width: 1100px; margin: 0 auto; padding: 24px 24px 0 24px; display: flex; align-items: center; gap: 24px; }
+        .avatar { width: 128px; height: 128px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); object-fit: cover; }
+        .channel-details h1 { font-size: 24px; font-weight: normal; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .channel-details h1::after { content: "✓"; font-size: 12px; background: #606060; color: #fff; border-radius: 50%; width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; }
+        .channel-details p { color: #606060; font-size: 14px; }
+        .sub-btn { background: #0f0f0f; color: #fff; border: none; padding: 10px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 12px; }
+        .tabs { border-bottom: 1px solid #e5e5e5; display: flex; gap: 24px; padding: 0 24px; list-style: none; margin-top: 16px; font-size: 14px; font-weight: bold; color: #606060; }
+        .tabs li { padding: 14px 0; cursor: pointer; border-bottom: 3px solid transparent; text-transform: uppercase; }
+        .tabs li.active { color: #0f0f0f; border-bottom-color: #0f0f0f; }
+        .channel-body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+        .section-title { font-size: 16px; font-weight: bold; margin: 24px 0 16px 0; display: flex; align-items: center; gap: 8px; border-top: 1px solid #e5e5e5; padding-top: 24px; }
+        .section-title:first-of-type { border-top: none; padding-top: 0; }
+        .section-title span { color: #606060; font-size: 13px; font-weight: normal; cursor: pointer; }
+        .video-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+        .shorts-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+        .video-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; cursor: pointer; }
+        .thumb { width: 100%; aspect-ratio: 16/9; background: #f0f0f0; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid #e5e5e5; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; text-align: center; }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .lost-tag { position: absolute; top: 8px; left: 8px; background: rgba(223, 17, 17, 0.9); color: white; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .video-meta-block { display: flex; gap: 8px; margin-top: 8px; }
+        .mini-avatar { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+        .video-card h4 { font-size: 13px; font-weight: bold; line-height: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #0f0f0f; }
+        .video-card p { color: #606060; font-size: 12px; margin-top: 2px; }
+        .shorts-card { display: flex; flex-direction: column; cursor: pointer; }
+        .shorts-thumb { width: 100%; aspect-ratio: 9/16; background: #e0e0e0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 16px; font-weight: bold; color: #fff; text-shadow: 1px 1px 4px #000; text-align: center; font-size: 14px; border: 1px solid #e5e5e5; }
+        .shorts-card h4 { font-size: 13px; font-weight: bold; margin-top: 8px; color: #0f0f0f; }
+        .shorts-card p { color: #606060; font-size: 12px; margin-top: 2px; }
+        .script-box { background-color: #f9f9f9; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; margin-top: 40px; font-size: 14px; line-height: 22px; color: #333; }
+        .script-box h2 { font-size: 18px; color: #0f0f0f; margin-bottom: 12px; border-bottom: 2px solid #ff0000; padding-bottom: 4px; display: inline-block; }
+        .script-content { max-height: 450px; overflow-y: auto; background: #fff; padding: 16px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Courier New', Courier, monospace; white-space: pre-wrap; font-size: 12px; color: #222; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-left"><span>☰ YouTube</span></div>
+        <div class="search-box"><input type="text" class="search-input" placeholder="Pesquisar"><button class="search-btn">🔍</button></div>
+        <button class="sign-in-top">Fazer login</button>
+    </div>
+    <div class="main-layout">
+        <div class="sidebar">
+            <div class="side-item">Início</div><div class="side-item">Shorts</div><div class="side-item">Inscrições</div>
+            <div class="sidebar-sep"></div>
+            <div class="side-item">Biblioteca</div><div class="side-item">Histórico</div>
+            <div class="sidebar-sep"></div>
+            <div class="sidebar-signin"><p>Faça login para curtir vídeos, comentar e se inscrever.</p><button>Fazer login</button></div>
+        </div>
+        <div class="content">
+            <div class="banner"><div class="banner-art"><span class="banner-text">Torajo</span><div class="banner-avatar-clip"><img src="https://archive.org" style="width:100%; height:100%; object-fit:cover;"></div></div></div>
+            <div class="channel-info">
+                <img class="avatar" src="https://archive.org" alt="Mundo Torajo">
+                <div class="channel-details"><h1>Canal do Torajo</h1><p>@Torajo • 340 mil inscritos</p><button class="sub-btn">Inscrever-se</button></div>
+            </div>
+            <ul class="tabs"><li class="active">Início</li><li>Vídeos</li><li>Shorts</li><li>Playlists</li><li>Comunidade</li><li>Canais</li><li>Sobre</li></ul>
+            <div class="channel-body">
+                <div class="section-title">Vídeos <span>▶ Reproduzir tudo</span></div>
+                <div class="video-grid">
+                    <div class="video-card"><div class="thumb" style="background-color: #e3f2fd;">DOMINE a Arte de...</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>DOMINE a Arte de DESENHAR com esse Simples Truque...</h4><p>48 mil visualizações • há 4 dias</p></div></div></div>
+                    <div class="video-card"><div class="thumb" style="background-color: #fce4ec;">Logo em 2023!</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>O Meu Problema com Logos Minimalistas...</h4><p>145 mil visualizações • há 6 dias</p></div></div></div>
+                    <div class="video-card"><div class="thumb" style="background-color: #efebe9;">Como é morar com estranhos...</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>Como é morar com estranhos... Como é morar com estranhos...</h4><p>174 mil visualizações • há 2 semanas</p></div></div></div>
+                    <a href="https://google.com" target="_blank" class="video-card"><div class="thumb"><div class="lost-tag">🚨 ABRIR NO DRIVE (.MP4)</div><img src="https://archive.org" alt="Copa do Mundo Torajo"></div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>Eu estou viciado na Copa do Mundo...</h4><p>75 mil visualizações • há 4 semanas</p></div></div></a>
+                    <div class="video-card"><div class="thumb" style="background-color: #eceff1;">ME CUSTOU 5 VIDEOS!</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>Eu EXPLODI meu canal o mais rápido que eu pude</h4><p>32 mil visualizações • há 2 meses</p></div></div></div>
+                    <div class="video-card"><div class="thumb" style="background-color: #e8f5e9;">100K ESPECIAL</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>REVELANDO meu ESPECIAL de 100 MIL INSCRITOS...</h4><p>136 mil visualizações • há 2 meses</p></div></div></div>
+                </div>
+                <div class="section-title">🩳 Shorts</div>
+                <div class="shorts-grid">
+                    <div class="shorts-card"><div class="shorts-thumb" style="background-color: #b2dfdb; color: #004d40;">⚽ Figurinhas</div><h4>Eu vou fazer o álbum da copa?</h4><p>108 mil visualizações</p></div>
+                    <div class="shorts-card"><div class="shorts-thumb" style="background-color: #d7ccc8; color: #4e342e;">⛏️ Minecraft</div><h4>Minecraft</h4><p>29 mil visualizações</p></div>
+                    <div class="shorts-card"><div class="shorts-thumb" style="background-color: #e1bee7; color: #4a148c;">🌌 é sério gente</div><h4>O Universo do Torajo foi longe demais...</h4><p>328 mil visualizações</p></div>
+                    <div class="shorts-card"><div class="shorts-thumb" style="background-color: #ffecb3; color: #ff6f00;">❤️ Namorada?</div><h4>Como é minha namorada?</h4><p>868 mil visualizações</p></div>
+                    <div class="shorts-card"><div class="shorts-thumb" style="background-color: #c8e6c9; color: #1b5e20;">✨ do próprio</div><h4>Como eu conheci meu ídolo</h4><p>1.1M visualizações</p></div>
+                    <div class="shorts-card"><div class="shorts-thumb" style="background-color: #ffccbc; color: #e65100;">🏫 Escola</div><h4>A escola é inútil</h4><p>817 mil visualizações</p></div>
+                </div>
+
+                <div class="section-title">Vídeos populares <span>▶ Reproduzir tudo</span></div>
+                <div class="video-grid">
+                    <div class="video-card"><div class="thumb" style="background-color: #f1f8e9;">2012 vs 2022</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>Como a internet mudou em 10 anos...</h4><p>2.4M visualizações • há 5 meses</p></div></div></div>
+                    <div class="video-card"><div class="thumb" style="background-color: #fffde7;">Censurado</div><div class="video-meta-block"><img class="mini-avatar" src="https://archive.org"><div><h4>Histórias que eu nunca devia ter contado...</h4><p>1.9M visualizações • há 7 months ago</p></div></div></div>
+                </div>
+
+                <div class="script-box">
+                    <h2>Transcrição .SRT Completa Recuperada (Legenda da IA do YouTube)</h2>
+                    <div class="script-content">1
+00:00:05,580 --> 00:00:09,240
+eu sei que meu canal é para pessoas que
+
+2
+00:00:07,319 --> 00:00:10,800
+gostam de histórias e desenhos e
+
+3
+00:00:09,240 --> 00:00:13,080
+provavelmente ninguém se importa com
+
+4
+00:00:10,800 --> 00:00:14,759
+futebol mas querem saber eu não me
+
+5
+00:00:13,080 --> 00:00:16,320
+importo com isso porque eu estou viciado
+
+6
+00:00:14,759 --> 00:00:18,119
+na Copa e quando eu digo que eu estou
+
+7
+00:00:16,320 --> 00:00:19,980
+viciado eu estou insistindo um jogo
+
+8
+00:00:18,119 --> 00:00:21,359
+enquanto eu escrevo esse vídeo eu não
+
+9
+00:00:19,980 --> 00:00:23,760
+paro de ver documentários no YouTube
+
+10
+00:00:21,359 --> 00:00:26,519
+assistir shorts de futebol no celular
+
+11
+00:00:23,760 --> 00:00:29,340
+tipo eu me orgulhei nesse conteúdo de
+cabeça e eu não vou sair disso até esse
+
+12
+00:00:26,519 --> 00:00:31,199
+treco acabar Ok eu nunca fui numa
+
+13
+00:00:29,340 --> 00:00:33,120
+criança que gostava muito de futebol ou
+
+14
+00:00:31,199 --> 00:00:35,160
+de esportes em geral eu sempre olhava
+
+15
+00:00:33,120 --> 00:00:36,600
+outros meninos da minha idade que
+
+16
+00:00:35,160 --> 00:00:38,880
+adoravam jogar e assistir cada jogo do
+
+17
+00:00:36,600 --> 00:00:40,980
+seu time favorito e vibravam de maneira
+
+18
+00:00:38,880 --> 00:00:43,320
+fanática sabendo todos os nomes dos
+
+19
+00:00:40,980 --> 00:00:45,660
+jogadores e cada técnica e cada regra
+
+20
+00:00:43,320 --> 00:00:47,340
+que deveria ser seguida e para mim
+
+21
+00:00:45,660 --> 00:01:01,180
+sempre foi tipo bom eu sei lá eu não me
+
+22
+00:00:47,340 --> 00:00:52,379
+importava muito eu não tinha nenhum
+
+23
+00:00:51,180 --> 00:00:54,960
+sentimento di raiva eu só não entendia o
+
+24
+00:00:52,379 --> 00:00:56,579
+porquê que as pessoas tinham tanta
+
+25
+00:00:54,960 --> 00:00:58,440
+vibração com esse esporte quando eu
+
+26
+00:00:56,579 --> 00:00:59,640
+crescer eu comecei a gostar de basquete
+
+27
+00:00:58,440 --> 00:01:01,320
+e Eu ainda acho que é um esporte muito
+
+28
+00:01:59,640 --> 00:01:04,080
+legal mas daí estou eu acompanhando a
+
+29
+00:01:04,080 --> 00:01:06,840
+copa indiretamente
+
+30
+00:01:05,519 --> 00:01:08,700
+do álbum de figurinhas com a minha
+
+31
+00:01:06,840 --> 00:01:12,540
+família e depois o primeiro jogo do
+
+32
+00:01:08,700 --> 00:01:14,159
+Brasil contra a Sérvia cara eu eu não
+
+33
+00:01:12,540 --> 00:01:16,200
+consigo explicar aquele gol do
+
+34
+00:01:14,159 --> 00:01:18,540
+Richarlyson que ele parecia um ninja
+
+35
+00:01:16,200 --> 00:01:21,600
+Supremo atirando a bola no ar tipo cara
+
+36
+00:01:18,540 --> 00:01:24,060
+sério como esse pombo conseguiu fazer
+
+37
+00:01:21,600 --> 00:01:26,040
+aquilo eu não faço a menor ideia De onde
+
+38
+00:01:24,060 --> 00:01:27,479
+surgiu esse sentimento tão patriota o
+
+39
+00:01:26,040 --> 00:01:29,340
+qual eu tô torcendo tanto assim pro
+
+40
+00:01:27,479 --> 00:01:31,020
+Brasil ganhar alguém se lembra que há um
+
+mês atrás estava todo mundo se matando
+
+41
+00:01:29,340 --> 00:01:33,000
+por causa de política e discutindo um
+
+42
+00:01:31,020 --> 00:01:34,860
+com um outro pensando meu deus do céu
+
+43
+00:01:33,000 --> 00:01:37,020
+but como o Brasil é uma desgraça E aqui
+
+44
+00:01:34,860 --> 00:01:39,180
+estamos agora assistindo o canarinho
+
+45
+00:01:37,020 --> 00:01:41,520
+pistola dançando na TV e colocando foto
+
+46
+00:01:41,520 --> 00:01:46,140
+de perfil verde amarelo no WhatsApp
+
+47
+00:01:43,200 --> 00:01:48,299
+escrito 100% de Jesus e eu amo meu país
+
+48
+00:01:46,140 --> 00:01:50,399
+e querem saber de uma coisa É isso aí
+
+49
+00:01:48,299 --> 00:01:52,380
+mesmo esse sentimento de reunir todo
+
+50
+00:01:50,399 --> 00:01:54,060
+mundo pra torcer para um monte de maluco
+
+51
+00:01:52,380 --> 00:01:56,460
+correndo atrás de uma bola maravilhoso
+
+52
+00:01:54,060 --> 00:01:58,020
+eu quero ver todo mundo sair da rua e
+
+53
+00:02:00,299 --> 00:01:56,460
+com um bando de animal se o Brasil
+
+54
+00:02:08,020 --> 00:02:02,040
+conseguir conquistar o hexa na moral e
+
+55
+00:02:00,299 --> 00:02:04,979
+se você quiser vir com papinha de tipo
+
+56
+00:02:02,040 --> 00:02:07,920
+assim ah mas é maior desnecessário esse
+
+57
+00:02:04,979 --> 00:02:10,140
+escândalo por causa de futebol tio faz
+
+58
+00:02:07,920 --> 00:02:11,160
+total silêncio Ok eu não sei descrever o
+
+59
+00:02:10,140 --> 00:02:12,959
+sentimento que eu estou sentindo agora
+
+60
+00:02:11,160 --> 00:02:14,340
+mas ninguém vai chegar para mim dizer
+
+61
+00:02:12,959 --> 00:02:16,440
+para eu parar de me sentir desse jeito
+
+62
+00:02:14,340 --> 00:02:18,360
+tá legal inclusive uma das coisas que eu
+
+63
+00:02:16,440 --> 00:02:20,040
+achei mais engraçado por causa da Copa é
+
+64
+00:02:18,360 --> 00:02:22,080
+que agora o Twitter virou um lugar muito
+
+65
+00:02:20,040 --> 00:02:23,520
+divertido e acompanhar os jogos no
+
+66
+00:02:22,080 --> 00:02:25,140
+momento que eu tô gravando esse vídeo a
+
+67
+00:02:23,520 --> 00:02:27,420
+Argentina tem a possibilidade de ser
+
+68
+00:02:25,140 --> 00:02:29,459
+eliminada na fase de grupos e o tanto de
+
+69
+00:02:27,420 --> 00:02:31,440
+meme e piada que eu vi sobre isso no
+
+72
+00:02:29,459 --> 00:02:32,819
+Twitter é algo que não tem preço e eu
+
+73
+00:02:31,440 --> 00:02:34,560
+não sei quando esse vídeo vai sair mas
+
+74
+00:02:32,819 --> 00:02:35,819
+eu vou dar os meus palpites E como vai
+
+75
+00:02:34,560 --> 00:02:37,800
+ser os próximos jogos do Brasil
+
+76
+00:02:35,819 --> 00:02:39,840
+provavelmente a gente vai jogar contra o
+
+77
+00:02:37,800 --> 00:02:40,860
+Uruguai depois a fase de grupos e eu
+
+78
+00:02:39,840 --> 00:02:42,599
+acredito que o Brasil vai conseguir
+
+79
+00:02:40,860 --> 00:02:44,519
+ganhar sem muita dificuldade depois
+
+80
+00:02:42,599 --> 00:02:46,080
+provavelmente a gente vai jogar com o
+
+81
+00:02:44,519 --> 00:02:47,700
+Japão e eu também acho que a gente vai
+
+82
+00:02:46,080 --> 00:02:49,860
+ganhar sem muitos problemas e depois
+
+83
+00:02:47,700 --> 00:02:51,180
+desse jogo eu ia achar muito legal se a
+
+84
+00:02:49,860 --> 00:02:52,739
+gente jogasse contra a Argentina mas
+
+85
+00:02:51,180 --> 00:02:54,420
+pela minha análise de classificação
+
+86
+00:02:52,739 --> 00:02:56,160
+provavelmente a gente vai jogar contra a
+
+87
+00:02:54,420 --> 00:02:57,900
+Holanda que de novo eu acho que a gente
+
+88
+00:02:56,160 --> 00:02:59,459
+tem muita chance de ganhar e a minha
+
+89
+00:02:57,900 --> 00:03:03,060
+última aposta é que a gente vai jogar
+
+90
+00:03:29,459 --> 00:03:04,980
+Final contra a França ou Espanha Mas
+
+91
+00:03:03,060 --> 00:03:06,900
+provavelmente a frase isso tudo dá certo
+
+92
+00:03:04,980 --> 00:03:09,239
+a gente consegue destruir esse time de
+
+93
+00:03:06,900 --> 00:03:11,040
+galos e levar a taça para casa e bom eu
+
+94
+00:03:09,239 --> 00:03:12,540
+sei lá eu espero que esse vídeo não
+
+95
+00:03:11,040 --> 00:03:14,220
+envelheça mal e que as minhas previsões
+
+96
+00:03:12,540 --> 00:03:15,900
+não tenham sido completamente erradas
+
+97
+00:03:14,220 --> 00:03:17,459
+agora eu vou continuar trabalhando no
+
+98
+00:03:15,900 --> 00:03:19,260
+meu próximo vídeo de animação que
+
+99
+00:03:17,459 --> 00:03:20,580
+inclusive tá dando muito trabalho e vou
+
+100
+00:03:19,260 --> 00:03:23,300
+continuar acompanhando os jogos igual
+
+101
+00:03:20,580 --> 00:03:23,300
+maluco tchau
+
+102
+00:03:23,570 --> 00:03:26,720
+[Música]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
